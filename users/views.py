@@ -1,7 +1,42 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.models import User
 from .models import Profile
+from django.contrib import messages
 
 # Create your views here.
+
+def loginUser(request):
+
+    if request.user.is_authenticated: #if user is login redirect him to profiles page
+        return redirect('profiles')
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        try:
+            user = User.objects.get(username=username) #chaeck if user exist in database
+        except:
+            messages.error(request, 'username does not exist')
+
+        user = authenticate(request, username=username, password=password) # it make sure if password matches the username
+
+        if user:
+            login(request, user) #this create user session in database
+            return redirect('profiles') #redirect user
+        else:
+             messages.error(request, 'Username or password is incorrect')
+        
+
+    return render(request, 'users/login_register.html')
+
+
+def logoutUser(request): 
+    logout(request)
+    messages.error(request, 'User logout')
+    return redirect('login')
+
 
 
 def profiles(request):
