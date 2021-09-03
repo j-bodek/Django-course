@@ -45,7 +45,7 @@
                 <p>
                   <a
                     class="project__author"
-                    href="{% url 'project' project.id %}"
+                    href="{% if project.owner.id %}{% url 'user_profile' project.owner.id %} {% endif %}"
                     >By {{project.owner}}</a
                   >
                 </p>
