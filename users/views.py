@@ -8,7 +8,6 @@ from .forms import CustomUserCreationForm
 # Create your views here.
 
 def loginUser(request):
-
     page = 'login'
 
     if request.user.is_authenticated: #if user is login redirect him to profiles page
@@ -17,11 +16,13 @@ def loginUser(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
+        
 
         try:
             user = User.objects.get(username=username) #chaeck if user exist in database
         except:
             messages.error(request, 'username does not exist')
+            
 
         user = authenticate(request, username=username, password=password) # it make sure if password matches the username
 
