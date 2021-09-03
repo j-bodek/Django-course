@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from .models import Profile
 from django.contrib import messages
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, Profileform
 from django.contrib.auth.decorators import login_required 
 
 # Create your views here.
@@ -57,7 +57,7 @@ def registerUser(request):
             messages.success(request, 'User account was created!')
 
             login(request, user)
-            return redirect('profiles')
+            return redirect('edit_account')
 
         else:
             messages.error(request, 'An error has occured during registration')
@@ -86,3 +86,19 @@ def userAccount(request):
     projects = profile.project_set.all()
     context = {'profile':profile, 'skills':skills, 'projects':projects}
     return render(request, 'users/account.html', context)
+
+
+@login_required(login_url='login')
+def editAccount(request):
+    profile = request.user.profile
+    form = Profileform(instance=profile)
+
+    if request.method == 'POST':
+        form = Profileform(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+
+            return redirect('account')
+
+    context = {'form':form}
+    return render(request, 'users/profile_form.html', context)
