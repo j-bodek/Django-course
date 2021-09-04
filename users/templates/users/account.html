@@ -67,7 +67,9 @@
         </div>
         <div class="settings">
           <h3 class="settings__title">Skills</h3>
-          <a class="tag tag--pill tag--sub settings__btn tag--lg" href="#"
+          <a
+            class="tag tag--pill tag--sub settings__btn tag--lg"
+            href="{% url 'create-skill' %}"
             ><i class="im im-plus"></i> Add Skill</a
           >
         </div>
@@ -82,10 +84,10 @@
             <td class="settings__tableActions">
               <a
                 class="tag tag--pill tag--main settings__btn"
-                href="{% url 'edit_account' %}"
+                href="{% url 'update-skill' skill.id %}"
                 ><i class="im im-edit"></i> Edit</a
               >
-              <a class="tag tag--pill tag--main settings__btn" href="#"
+              <a class="tag tag--pill tag--main settings__btn" href="{% url 'delete-skill' skill.id %}?next=/account" 
                 ><i class="im im-x-mark-circle-o"></i> Delete</a
               >
             </td>
@@ -124,7 +126,7 @@
               >
               <a
                 class="tag tag--pill tag--main settings__btn"
-                href="{% url 'delete-project' project.id %}"
+                href="{% url 'delete-project' project.id %}?next=/account"
                 ><i class="im im-x-mark-circle-o"></i> Delete</a
               >
             </td>

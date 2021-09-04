@@ -28,7 +28,7 @@ def create_project(request):
             project = form.save(commit=False)
             project.owner = profile
             project.save()
-            return redirect('projects')
+            return redirect('account')
 
     context = {'form': form}
     return render(request, "projects/project_form.html", context)
@@ -59,4 +59,4 @@ def deleteProject(request, project_id):
         return redirect('projects')
 
     context = {'object':project}
-    return render(request, 'projects/delete_template.html', context)
+    return render(request, 'delete_template.html', context)

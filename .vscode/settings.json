@@ -1,0 +1,16 @@
+{
+  "[html]": {
+    "editor.suggest.insertMode": "replace"
+  },
+  "[django-html]": {
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
+    }
+  },
+  "html.format.unformatted": "",
+  "html.format.contentUnformatted": "",
+  "html.format.extraLiners": "",
+  "django.snippets.exclude": ["cms", "wagtail"]
+}
