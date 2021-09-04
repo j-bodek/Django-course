@@ -9,7 +9,7 @@
       </div>
 
       <div class="hero-section__search">
-        <form class="form" action="#" method="get">
+        <form id='searchForm' class="form" action="{% url 'projects' %}" method="get">
           <div class="form__field">
             <label for="formInput#search">Search By Projects </label>
             <input
@@ -17,6 +17,7 @@
               id="formInput#search"
               type="text"
               name="text"
+              value= "{{search_quary}}"
               placeholder="Search by Project Title"
             />
           </div>
@@ -46,7 +47,7 @@
                   <a
                     class="project__author"
                     href="{% if project.owner.id %}{% url 'user_profile' project.owner.id %} {% endif %}"
-                    >By {{project.owner}}</a
+                    >By {{project.owner.name}}</a
                   >
                 </p>
                 <p class="project--rating">
@@ -70,6 +71,11 @@
       </div>
     </div>
   </section>
+
+
+  <!-- et queryset as projects and custome_range as custome_range for projects -->
+  {% include 'pagination.html' with queryset=projects custome_range=custome_range %}
+
 </main>
 
 {% endblock content %}

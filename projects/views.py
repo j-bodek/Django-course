@@ -1,21 +1,30 @@
+from projects.utils import searchProjects
 from django.shortcuts import redirect, render, redirect
 from django.contrib.auth.decorators import login_required 
 
 # Create your views here.
 
 from django.http import HttpResponse
-from .models import Project
+from .models import Project, Tag
 from .forms import ProjectForm
+from .utils import searchProjects, paginateProjects
 
 
 def projects(request):
-    projects = Project.objects.all()
-    context = {'projects':projects}
+
+    search_quary, projects = searchProjects(request)
+    custome_range ,projects = paginateProjects(request, projects, 3)
+
+
+    context = {'projects':projects, 'search_quary':search_quary, 'custome_range':custome_range}
     return render(request, 'projects/projects.html', context)
+
 
 def project(request, project_id):
     projectObj = Project.objects.get(id=project_id)
     return render(request, 'projects/single-project.html', {'project': projectObj})
+
+
 
 @login_required(login_url='login') #only login users can display this
 def create_project(request):
@@ -32,6 +41,7 @@ def create_project(request):
 
     context = {'form': form}
     return render(request, "projects/project_form.html", context)
+
 
 
 @login_required(login_url='login')
