@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse
 from .models import Project, Tag
-from .forms import ProjectForm
+from .forms import ProjectForm, ReviewForm
 from .utils import searchProjects, paginateProjects
 
 
@@ -22,7 +22,8 @@ def projects(request):
 
 def project(request, project_id):
     projectObj = Project.objects.get(id=project_id)
-    return render(request, 'projects/single-project.html', {'project': projectObj})
+    form = ReviewForm()
+    return render(request, 'projects/single-project.html', {'project': projectObj, 'form': form})
 
 
 
