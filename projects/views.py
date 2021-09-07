@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from .models import Project, Tag
 from .forms import ProjectForm, ReviewForm
 from .utils import searchProjects, paginateProjects
+from django.contrib import messages
 
 
 def projects(request):
@@ -23,6 +24,18 @@ def projects(request):
 def project(request, project_id):
     projectObj = Project.objects.get(id=project_id)
     form = ReviewForm()
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        review = form.save(commit=False)
+        review.project = projectObj
+        review.owner = request.user.profile
+        review.save()
+
+        #update project votecount
+        messages.success(request, 'Your review was successfully submitted!')
+        return redirect('project', pk=projectObj.id)
+
     return render(request, 'projects/single-project.html', {'project': projectObj, 'form': form})
 
 

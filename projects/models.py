@@ -29,7 +29,7 @@ class Project(models.Model):
 class Review(models.Model):
     VOTE_TYPE = (
         ('up', 'Up Vote'),
-        ('down', 'down Vote')
+        ('down', 'Down Vote')
     )
 
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
