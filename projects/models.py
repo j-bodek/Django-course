@@ -23,7 +23,19 @@ class Project(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['-created'] # give newest projects first  
+        ordering = ['-vote_ratio', '-vote_total', 'title'] # give highest rated projects first  
+
+    #update votes count
+    @property
+    def getVoteCount(self):
+        reviews = self.review_set.all()
+        upVotes = reviews.filter(value='up').count()
+        totalVotes = reviews.count()
+
+        ratio = (upVotes / totalVotes) * 100
+        self.vote_total = totalVotes
+        self.vote_ratio = ratio
+        self.save()
 
 
 class Review(models.Model):

@@ -32,9 +32,11 @@ def project(request, project_id):
         review.owner = request.user.profile
         review.save()
 
+        projectObj.getVoteCount
+
         #update project votecount
         messages.success(request, 'Your review was successfully submitted!')
-        return redirect('project', pk=projectObj.id)
+        return redirect('project', project_id=projectObj.id)
 
     return render(request, 'projects/single-project.html', {'project': projectObj, 'form': form})
 
