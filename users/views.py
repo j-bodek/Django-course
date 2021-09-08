@@ -31,7 +31,7 @@ def loginUser(request):
 
         if user:
             login(request, user) #this create user session in database
-            return redirect('profiles') #redirect user
+            return redirect(request.GET['next'] if 'next' in request.GET else 'account') #redirect user
         else:
              messages.error(request, 'Username or password is incorrect')
         

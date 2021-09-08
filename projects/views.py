@@ -21,8 +21,8 @@ def projects(request):
     return render(request, 'projects/projects.html', context)
 
 
-def project(request, project_id):
-    projectObj = Project.objects.get(id=project_id)
+def project(request, pk):
+    projectObj = Project.objects.get(id=pk)
     form = ReviewForm()
 
     if request.method == 'POST':
@@ -36,7 +36,7 @@ def project(request, project_id):
 
         #update project votecount
         messages.success(request, 'Your review was successfully submitted!')
-        return redirect('project', project_id=projectObj.id)
+        return redirect('project', pk=projectObj.id)
 
     return render(request, 'projects/single-project.html', {'project': projectObj, 'form': form})
 
@@ -61,9 +61,9 @@ def create_project(request):
 
 
 @login_required(login_url='login')
-def update_project(request, project_id):
+def update_project(request, pk):
     profile = request.user.profile
-    project = profile.project_set.get(id=project_id) #set all project of login user
+    project = profile.project_set.get(id=pk) #set all project of login user
     form = ProjectForm(instance = project)
 
     if request.method == 'POST':
@@ -77,9 +77,9 @@ def update_project(request, project_id):
 
 
 @login_required(login_url='login')
-def deleteProject(request, project_id):
+def deleteProject(request, pk):
     profile = request.user.profile
-    project = profile.project_set.get(id=project_id) #set all project of login user
+    project = profile.project_set.get(id=pk) #set all project of login user
     if request.method == 'POST':
         project.delete()
         return redirect('projects')

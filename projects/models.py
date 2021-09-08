@@ -25,6 +25,12 @@ class Project(models.Model):
     class Meta:
         ordering = ['-vote_ratio', '-vote_total', 'title'] # give highest rated projects first  
 
+    @property
+    def reviewers(self):
+        queryset = self.review_set.all().values_list('owner__id', flat=True)
+        return queryset
+
+
     #update votes count
     @property
     def getVoteCount(self):
