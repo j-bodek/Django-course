@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Message
 from django.contrib import messages
-from .forms import CustomUserCreationForm, Profileform, SkillForm
+from .forms import CustomUserCreationForm, Profileform, SkillForm, MessageForm
 from django.contrib.auth.decorators import login_required 
 from django.db.models import Q
 from .utils import searchProfiles, paginateProfiles
@@ -166,5 +166,46 @@ def deleteSkill(request,pk):
 
 @login_required(login_url='login')
 def inbox(request):
-    context = {}
+    profile = request.user.profile
+    messageRequests = profile.messages.all()
+    unreadCount = messageRequests.filter(is_read=False).count()
+
+    context = {'messageRequests':messageRequests,'unreadCount':unreadCount}
     return render(request, 'users/inbox.html', context)
+
+@login_required(login_url='login')
+def singleMessage(request,pk):
+    profile = request.user.profile
+    message = profile.messages.get(id=pk)
+    if not message.is_read:
+        message.is_read = True
+        message.save()
+
+    context = {'message':message}
+    return render(request, 'users/message.html', context)
+
+
+@login_required(login_url='login')
+def createMessage(request, pk):
+    if not request.user.is_authenticated:
+        messages.error(request, 'You need to be login')
+        return redirect('login')
+
+    recipient = Profile.objects.get(id = pk)
+    form = MessageForm()
+
+    sender = request.user.profile
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = sender
+            message.recipient = recipient
+            message.email = sender.email
+            message.save()
+
+            messages.success(request, 'Your message was successfully sent!')
+            return redirect('user_profile', pk=recipient.id)
+
+    context = {'recipient':recipient, 'form':form}
+    return render(request, 'users/message_form.html', context)
