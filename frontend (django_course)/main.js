@@ -1,3 +1,22 @@
+let loginBtn = document.getElementById("login-btn")
+let logoutBtn = document.getElementById("logout-btn")
+
+let token = localStorage.getItem('token')
+
+if (token) {
+    loginBtn.remove()
+} else {
+    logoutBtn.remove()
+}
+
+logoutBtn.addEventListener('click', (e) => {
+    e.preventDefault()
+    localStorage.removeItem('token')
+    window.location = 'file:///C:/Users/Admin/Desktop/django_course/frontend%20(django_course)/login.html'
+})
+
+
+
 let projectUrl = 'http://127.0.0.1:8000/api/projects/'
 
 let getProject = () => {
