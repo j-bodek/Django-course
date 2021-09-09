@@ -1,5 +1,10 @@
-from django.http import JsonResponse #to get json response
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from . serializers import ProjectSerializer
+from projects.models import Project
 
+
+@api_view(['GET'])
 def getRoutes(request):
 
     routes = [
@@ -11,4 +16,21 @@ def getRoutes(request):
         {'POST':'/api/users/token/refresh'}, # build in class 
     ]
 
-    return JsonResponse(routes, safe=False)
+    return Response(routes)
+
+
+@api_view(['GET'])
+def getProjects(request):
+    projects = Project.objects.all() # getting all the projects
+    serializer = ProjectSerializer(projects, many=True) #serialize projects
+
+    return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+def getProject(request, pk):
+    projects = Project.objects.get(id=pk) # getting all the projects
+    serializer = ProjectSerializer(projects, many=False) #serialize projects
+
+    return Response(serializer.data)
