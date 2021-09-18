@@ -1,5 +1,5 @@
 from projects.utils import searchProjects
-from django.shortcuts import redirect, render, redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required 
 
 # Create your views here.

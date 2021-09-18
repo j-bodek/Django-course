@@ -27,7 +27,7 @@ class Profile(models.Model):
         return str(self.user.username)
 
     class Meta:
-        ordering = ['-created'] # give highest rated projects first  
+        ordering = ['-created'] # give newest projects first
 
     @property
     def imageURL(self):

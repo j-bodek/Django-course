@@ -51,7 +51,7 @@
             {% elif request.user.is_authenticated %}
             <form class="form" action="{% url 'project' project.id %}" method="POST">
               {% csrf_token %}
-              {% for field in form %}
+              {% for field in form %} 
               <!-- Textarea -->
               <div class="form__field">
                 <label for="formInput#textarea">{{Fied.label}}</label>
